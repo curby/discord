@@ -6,7 +6,6 @@
 {{ $introChannelID := 975085554905514014 }}
 {{ $modGroupID := 971522397775736833 }}
 {{ $generalChannelID := 971484195098599506 }}
-{{ $generalChannelID = 972209499123380335 }}
 {{ $imageLinkRegex := `https?:\/\/(?:\w+\.)?[\w-]+\.[\w]{2,3}(?:\/[\w-_.]+)+\.(?:png|jpg|jpeg|gif|webp)` }}
 {{ $previewLifetime := 3600 }}
 {{ $avatar := (joinStr "" "https://cdn.discordapp.com/avatars/" (toString .User.ID) "/" .User.Avatar ".png") }}
@@ -35,7 +34,6 @@
         "color" 13585960
         "description" (print "**[" $msg.Author.String " wrote an intro!](" $messageLink ")**\n\n")
         "fields" (cslice )
-        "footer" (sdict "text" "(This will auto-delete in an hour, but #introductions still has the original.)")
     }}
 
     {{/* If we add an image to the embed, we won't also add a thumbnail. */}}
@@ -87,6 +85,5 @@
 
     {{/* Create timed-life preview */}}
     {{ $previewID := sendMessageRetID $generalChannelID (cembed $embed) }}
-    {{ deleteMessage $generalChannelID $previewID $previewLifetime }}
 {{ end }}
 {{/* vim: set tabstop=4:softtabstop=4:shiftwidth=4   */}}
