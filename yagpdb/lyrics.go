@@ -1,14 +1,15 @@
 {{/********************************************************************** 
-     Displays lyrics line-by-line
+    Displays lyrics line-by-line
+    To be called by external script (use trigger type None)
    **********************************************************************/}}
- 
+
 {{/* Unpack data from caller */}}
 {{ $triggerID := .ExecData.triggerID }}
 {{ $lyrics := .ExecData.lyrics }}
- 
+
 {{ $message := joinStr "" "\n> **" (index $lyrics 0) "**\n> " (index $lyrics 1)  "\n> " (index $lyrics 2) }}
 {{ $messageID := sendMessageRetID nil $message }}
- 
+
 {{ $lines := len $lyrics }}
 {{ range seq 1 $lines -}}
 	{{ $current := . -}}
@@ -27,11 +28,7 @@
 	{{ end -}}
 	{{ editMessage nil $messageID $message -}}
 {{ end }}
- 
+
 {{ deleteMessage nil $messageID 5 }}
 {{ dbDel 31 "mutex" }}
 {{ addMessageReactions nil $triggerID ":musical_note:" }}
- 
- #32 - Regex: (aren't|isn't|not) *(too|that|very)? *unusual
- 
- #33 - Regex: \bcity\b|\bcities\b
