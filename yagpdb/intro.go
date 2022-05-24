@@ -1,5 +1,14 @@
 {{/********************************************************************** 
-     Intro channel manager
+    YAGPDB Custom Command - Intro channel manager
+
+    Copies each intro to general chat channel, and restricts general 
+    conversation in the channel.
+
+    Trigger type: Regex
+    Trigger string: .*
+
+    Setup: Change channel and group IDs below
+    Setup: Restrict this CC to only run in a dedicated channel.
    **********************************************************************/}}
 
 {{ $key := "wroteIntro" }}

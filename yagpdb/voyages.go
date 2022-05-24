@@ -1,5 +1,13 @@
 {{/**********************************************************************
-     Voyages channel manager
+    YAGPDB Custom Command - Voyages channel manager
+
+    Manages a channel for playing the roll-n-write board game "Voyages"
+    via Discord.
+
+    Trigger type: Regex
+    Trigger string: .*
+
+    Setup: Restrict this CC to only run in a dedicated channel.
    **********************************************************************/}}
 
 {{/* Initialize */}}

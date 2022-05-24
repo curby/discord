@@ -1,6 +1,9 @@
 {{/********************************************************************** 
-    Displays lyrics line-by-line
-    To be called by external script (use trigger type None)
+    YAGPDB Custom Command - Karaoke Machine
+
+    Displays a song's lyrics line-by-line
+
+    Trigger type: None (To be called by external script)
    **********************************************************************/}}
 
 {{/* Unpack data from caller */}}
@@ -30,5 +33,5 @@
 {{ end }}
 
 {{ deleteMessage nil $messageID 5 }}
-{{ dbDel 31 "mutex" }}
+{{ dbDel .CCID "mutex" }}
 {{ addMessageReactions nil $triggerID ":musical_note:" }}

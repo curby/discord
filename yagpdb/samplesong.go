@@ -1,3 +1,12 @@
+{{/********************************************************************** 
+    YAGPDB Custom Command - Sample song for lyrics display
+
+    Trigger type: Regex
+    Trigger string: (aren't|isn't|not) *(too|that|very)? *unusual
+
+    Setup: Change CCID to the number of the lyrics script
+   **********************************************************************/}}
+
 {{ $lyrics := cslice
 "It's not unusual to be loved by anyone"
 "It's not unusual to have fun with anyone"
