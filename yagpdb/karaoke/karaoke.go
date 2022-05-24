@@ -1,10 +1,15 @@
-{{/********************************************************************** 
-    YAGPDB Custom Command - Karaoke Machine
+{{/**************************************************************************\
 
-    Displays a song's lyrics line-by-line
+    YAGPDB Custom Command - Karaoke Machine
+    ---------------------------------------
+
+    Displays a song's lyrics line-by-line. See samplesong.go for a detailed
+    example with sample trigger regex, or use songtemplate.go to define
+    new songs.
 
     Trigger type: None (To be called by external script)
-   **********************************************************************/}}
+
+  \**************************************************************************/}}
 
 {{/* Unpack data from caller */}}
 {{ $triggerID := .ExecData.triggerID }}

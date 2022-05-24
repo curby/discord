@@ -1,11 +1,16 @@
-{{/********************************************************************** 
-    YAGPDB Custom Command - Sample song for lyrics display
+{{/**************************************************************************\
+
+    YAGPDB Custom Command - Sample song for karaoke machine
+    -------------------------------------------------------
+
+    Use songtemplate.go to define new songs.
 
     Trigger type: Regex
     Trigger string: (aren't|isn't|not) *(too|that|very)? *unusual
 
-    Setup: Change CCID to the number of the lyrics script
-   **********************************************************************/}}
+    Setup: Change CCID to the karaoke machine script's ID.
+
+  \**************************************************************************/}}
 
 {{ $lyrics := cslice
 "It's not unusual to be loved by anyone"
@@ -31,10 +36,12 @@
 
 {{/* Set to the number of the CC that will display lyrics */}}
 {{ $lyricsCCID := 31 }}
+{{/* This logic *must* exist outside of the karaoke script or else
+     the mutex warning will never trigger (triggers will just queue up). */}}
 {{ if $mutex := dbGet $lyricsCCID "mutex" }}
-	Sorry, I can't sing two songs at once!
-	{{ deleteResponse 10 }}
+    Sorry, I can't sing two songs at once!
+    {{ deleteResponse 10 }}
 {{ else }}
-	{{ dbSet $lyricsCCID "mutex" "mutex" }}
-	{{ execCC $lyricsCCID nil 0 (sdict "triggerID" .Message.ID "lyrics" $lyrics) }}
+    {{ dbSet $lyricsCCID "mutex" "mutex" }}
+    {{ execCC $lyricsCCID nil 0 (sdict "triggerID" .Message.ID "lyrics" $lyrics) }}
 {{ end }}
