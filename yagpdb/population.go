@@ -11,6 +11,8 @@
     Interval: 15 minutes
 
     Setup: Change channel and post IDs below
+    Setup: Restrict to only run in botspam channels
+    Setup: Restrict to only admins (e.g. put in administrator cc group)
 
   \**************************************************************************/}}
 
