@@ -31,6 +31,14 @@
 }}
 {{ editMessage $channelID $postID (complexMessageEdit "embed" $embed "content" "") }}
 
+{{/* copy and paste these lines to change other posts too */}}
+{{ $channelID = 971816708841046076 }}
+{{ $postID = 981959484861714532 }}
+{{ editMessage $channelID $postID (complexMessageEdit "embed" $embed "content" "") }}
+
+
+
+
 {{/* alternate display style, using the embed's description:
 "description" (print "Total Members: **" .Guild.MemberCount "**\n" "Online Members: **" onlineCount "**")
  */}}
