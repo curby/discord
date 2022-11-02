@@ -49,7 +49,7 @@
         {{ $result = dbIncr $RID (print "reaction_counter_" .ReactionMessage.Author.ID) 1 }}
         {{ dbSetExpire $CID $Ckey $thisTime 30 }}
         {{ if $debug }}
-            {{ sendMessage $debugChannel ( print "[CC: " .CCID "] <@" .ReactionMessage.Author.ID "> now has " $result ) }}
+            {{ sendMessage $debugChannel ( print "[CC: " .CCID "] " .ReactionMessage.Author.Username " now has " $result ) }}
         {{ end }}
     {{ else if $debug }}
         {{ sendMessage $debugChannel ( print "[CC: " .CCID "] Cooldown active, noop" ) }}
