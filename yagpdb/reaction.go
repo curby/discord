@@ -22,7 +22,7 @@
 {{ $debug := true }}
 
 {{ if $debug }}
-    {{ sendMessage $debugChannel ( print "[CC: " .CCID "] <@" .Reaction.UserID "> :point_right: <@" .ReactionMessage.Author.ID "> (" .ReactionMessage.Link ")" ) }}
+    {{ sendMessage $debugChannel ( print "[CC: " .CCID "] " (userArg .Reaction.UserID).Username " :point_right: " .ReactionMessage.Author.Username " (" .ReactionMessage.Link ")" ) }}
 {{ end }}
 
 {{/* Skip people reacting to themselves */}}
@@ -46,7 +46,7 @@
 
     {{/* Check cooldown */}}
     {{ if gt $thisTime (add $lastTime $cooldown) }}
-        {{ $result = dbIncr $RID .ReactionMessage.Author.ID 1 }}
+        {{ $result = dbIncr $RID (print "reaction_counter_" .ReactionMessage.Author.ID) 1 }}
         {{ dbSetExpire $CID $Ckey $thisTime 30 }}
         {{ if $debug }}
             {{ sendMessage $debugChannel ( print "[CC: " .CCID "] <@" .ReactionMessage.Author.ID "> now has " $result ) }}
@@ -58,3 +58,5 @@
 {{ else if $debug }}
     {{ sendMessage $debugChannel ( print "[CC: " .CCID "] reaction to self, noop" ) }}
 {{ end }}
+
+{{/* vim: set tabstop=4:softtabstop=4:shiftwidth=4   */}}
