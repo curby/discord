@@ -19,6 +19,7 @@
 {{ $CID := .CCID }}      {{/* database id for cooldown timers */}}
 {{ $RID := 26 }}         {{/* database id for reaction counts */}}
 {{ $debugChannel := 971603266003664986 }}
+{{ $botRoleID := 971613059812589638 }}
 {{ $debug := true }}
 
 {{ if $debug }}
@@ -27,36 +28,45 @@
 
 {{/* Skip people reacting to themselves */}}
 {{ if ne .Reaction.UserID .ReactionMessage.Author.ID }}
-    {{/* Get cooldown from database */}}
-    {{ $Ckey := print .Reaction.UserID "_" .ReactionMessage.Author.ID }}
-    {{ $result := (dbGet $CID $Ckey).Value }}
-    {{ $lastTime := 0 }}
-    {{ $thisTime := currentTime.Unix }}
-    {{ if $result }}
-        {{ $lastTime = toInt $result }}
-        {{ if $debug }}
-            {{ sendMessage $debugChannel ( print "[CC: " .CCID "] Found cooldown entry " $lastTime "(now " $thisTime ")" ) }}
-        {{ end }}
-        {{/* Clean up dirty database entry */}}
-        {{ if gt $thisTime (add $lastTime $cooldown) }}
-            {{ sendMessage $debugChannel ( print "[CC: " .CCID "] Cleaning up database entry: " $CID " " $Ckey ) }}
-            {{ dbDel $CID $Ckey }}
-        {{ end }}
-    {{ end }}
 
-    {{/* Check cooldown */}}
-    {{ if gt $thisTime (add $lastTime $cooldown) }}
-        {{ $result = dbIncr $RID (print "reaction_counter_" .ReactionMessage.Author.ID) 1 }}
-        {{ dbSetExpire $CID $Ckey $thisTime 30 }}
-        {{ if $debug }}
-            {{ sendMessage $debugChannel ( print "[CC: " .CCID "] " .ReactionMessage.Author.Username " now has " $result ) }}
+    {{/* Skip people reacting to bots */}}
+    {{ if not (targetHasRoleID .ReactionMessage.Author.ID $botRoleID) }}
+
+        {{/* Get cooldown from database */}}
+        {{ $Ckey := print .Reaction.UserID "_" .ReactionMessage.Author.ID }}
+        {{ $result := (dbGet $CID $Ckey).Value }}
+        {{ $lastTime := 0 }}
+        {{ $thisTime := currentTime.Unix }}
+        {{ if $result }}
+            {{ $lastTime = toInt $result }}
+            {{ if $debug }}
+                {{ sendMessage $debugChannel ( print "[CC: " .CCID "] Found cooldown entry " $lastTime " (now " $thisTime ")" ) }}
+            {{ end }}
+            {{/* Clean up dirty database entry */}}
+            {{ if gt $thisTime (add $lastTime $cooldown) }}
+                {{ sendMessage $debugChannel ( print "[CC: " .CCID "] Cleaning up database entry: " $CID " " $Ckey ) }}
+                {{ dbDel $CID $Ckey }}
+            {{ end }}
         {{ end }}
+
+        {{/* Check cooldown (skip someone's spammed reactions to same target) */}}
+        {{ if gt $thisTime (add $lastTime $cooldown) }}
+            {{ $result = dbIncr $RID (print "reaction_counter_" .ReactionMessage.Author.ID) 1 }}
+            {{ dbSetExpire $CID $Ckey $thisTime 30 }}
+            {{ if $debug }}
+                {{ sendMessage $debugChannel ( print "[CC: " .CCID "] " .ReactionMessage.Author.Username " now has " $result ) }}
+            {{ end }}
+
+        {{ else if $debug }}
+            {{ sendMessage $debugChannel ( print "[CC: " .CCID "] Cooldown active, noop" ) }}
+        {{ end }}
+
     {{ else if $debug }}
-        {{ sendMessage $debugChannel ( print "[CC: " .CCID "] Cooldown active, noop" ) }}
+        {{ sendMessage $debugChannel ( print "[CC: " .CCID "] Reaction to bot, noop" ) }}
     {{ end }}
 
 {{ else if $debug }}
-    {{ sendMessage $debugChannel ( print "[CC: " .CCID "] reaction to self, noop" ) }}
+    {{ sendMessage $debugChannel ( print "[CC: " .CCID "] Reaction to self, noop" ) }}
 {{ end }}
 
-{{/* vim: set tabstop=4:softtabstop=4:shiftwidth=4   */}}
+{{/* vim: set ts=4 sw=4 et: */}}

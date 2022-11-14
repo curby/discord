@@ -98,4 +98,5 @@
     {{/* Create timed-life preview */}}
     {{ $previewID := sendMessageRetID $generalChannelID (cembed $embed) }}
 {{ end }}
-{{/* vim: set tabstop=4:softtabstop=4:shiftwidth=4   */}}
+
+{{/* vim: set ts=4 sw=4 et: */}}
