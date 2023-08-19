@@ -3,48 +3,55 @@
     YAGPDB Custom Command - Reaction Leaderboard
     --------------------------------------------
 
-    Gives the top 10 recipients of reactions and the reaction counts of those
-    members as well as that of the caller or an optionally specified member ID.
+    Edits a post with the current reactions leaderboard (this could be a pinned
+    post for example). Make it run in a bot spam channel, even if it's editing
+    a post in another channel.
 
-    Note: @mentions are intentionally unsupported to reduce notification spam.
+    Trigger type: Minute Interval
+    Interval: 15 minutes
 
-    Trigger type: Command
-    Trigger name: ?reactions
-
-    Setup: None
+    Setup: Change channel and post IDs below
+    Setup: Restrict to only run in botspam channels
+    Setup: Restrict to only admins (e.g. put in administrator cc group)
 
   \**************************************************************************/}}
 
+{{ $channelID := 1142498711931474091 }}
+{{ $postID := 1142506464435519572 }}
 
 {{/* Initialize */}}
-{{ $missing := true }}
 {{ $position := 0 }}
 {{ $leaderID := 0 }}
 {{ $emojis := cslice "zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine" "keycap_ten" }}
 {{ $output := "" }}
-
-{{/* Look for optional user (if none, look for triggering user) */}}
-{{ $args := parseArgs 0 "Give an optional user ID" (carg "int" "targetID") }}
-{{ $targetID := .User.ID }}
-{{ if ($args.IsSet 0) }}
-    {{ $targetID = ($args.Get 0) }}
-{{ end -}}
 
 {{/* Iterate through top 10 reactees */}}
 {{ $lb := dbTopEntries "reaction_counter_%" 10 0 }}
 {{ range $lb }}
     {{- $position = add $position 1 }}
     {{- $leaderID = (slice .Key 17) }}
-    {{- if eq (toInt $leaderID) $targetID }}
-        {{- $missing = false }}
-    {{- end }}
     {{- $output = joinStr "" $output ":" (index $emojis $position) ": <@" $leaderID "> (" (toString (toInt .Value)) ")\n" }}
 {{- end }}
-{{ if $missing }}
-    {{ $userReactions := (dbGet 26 (print "reaction_counter_" $targetID)).Value }}
-    {{ $output = joinStr "" $output "⋮\n:asterisk: <@" $targetID "> (" (toString (toInt $userReactions)) ")\n" }}
-{{ end }}
 
-{{ sendMessage nil (cembed "title" "Reaction Leaderboard" "color" 26367 "description" $output) }}
+{{ $embed := cembed
+    "title" "Reaction Leaderboard"
+    "color" 13585960
+    "description" (print $output "\nType `?reactions` below to see the number of times people have reacted to your posts.")
+    "footer" (sdict "text" "Last update (every 15m):")
+    "timestamp" currentTime.UTC
+}}
+{{ editMessage $channelID $postID (complexMessageEdit "embed" $embed "content" "") }}
+
+{{/* copy and paste these lines to change other posts too */}}
+{{/*
+{{ $channelID = 971816708841046076 }}
+{{ $postID = 981959484861714532 }}
+{{ editMessage $channelID $postID (complexMessageEdit "embed" $embed "content" "") }}
+*/}}
+
+{{/* alternate display style, using the embed's description:
+"description" (print "Total Members: **" .Guild.MemberCount "**\n" "Online Members: **" onlineCount "**")
+ */}}
 
 {{/* vim: set ts=4 sw=4 et: */}}
+
