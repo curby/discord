@@ -1,50 +1,32 @@
 {{/**************************************************************************\
 
-    YAGPDB Custom Command - Reaction Leaderboard
-    --------------------------------------------
+    YAGPDB Custom Command - My Reactions Query
+    ------------------------------------------
 
-    Gives the top 10 recipients of reactions and the reaction counts of those
-    members as well as that of the caller or an optionally specified member ID.
+    Returns the reaction count for the caller.
 
-    Note: @mentions are intentionally unsupported to reduce notification spam.
+    Trigger type: Regex
+    Trigger Regex: .*
 
-    Trigger type: Command
-    Trigger name: ?reactions
-
-    Setup: None
+    Setup: Restrict to a particular channel, since this removes all posts.
 
   \**************************************************************************/}}
 
+{{ $RID := 26 }}         {{/* database id for reaction counts */}}
 
-{{/* Initialize */}}
-{{ $missing := true }}
-{{ $position := 0 }}
-{{ $leaderID := 0 }}
-{{ $emojis := cslice "zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine" "keycap_ten" }}
-{{ $output := "" }}
-
-{{/* Look for optional user (if none, look for triggering user) */}}
-{{ $args := parseArgs 0 "Give an optional user ID" (carg "int" "targetID") }}
-{{ $targetID := .User.ID }}
-{{ if ($args.IsSet 0) }}
-    {{ $targetID = ($args.Get 0) }}
-{{ end -}}
-
-{{/* Iterate through top 10 reactees */}}
-{{ $lb := dbTopEntries "reaction_counter_%" 10 0 }}
-{{ range $lb }}
-    {{- $position = add $position 1 }}
-    {{- $leaderID = (slice .Key 17) }}
-    {{- if eq (toInt $leaderID) $targetID }}
-        {{- $missing = false }}
-    {{- end }}
-    {{- $output = joinStr "" $output ":" (index $emojis $position) ": <@" $leaderID "> (" (toString (toInt .Value)) ")\n" }}
-{{- end }}
-{{ if $missing }}
-    {{ $userReactions := (dbGet 26 (print "reaction_counter_" $targetID)).Value }}
-    {{ $output = joinStr "" $output "⋮\n:asterisk: <@" $targetID "> (" (toString (toInt $userReactions)) ")\n" }}
+{{ if eq "?reactions" (trimSpace (lower .Cmd)) }}
+    {{ $userReactions := toInt (dbGet .CCID (print "reaction_counter_" .User.ID)).Value }}
+    {{ $rank := "" }}
+    {{ if gt $userReactions 0 }}
+        {{ $userRank := dbRank (sdict "userID" $RID) $RID (print "reaction_counter_" .User.ID) }}
+        {{ $reactees := dbCount $RID }}
+        {{ $rank = printf " (ranked #%d out of %d people with reactions)" $userRank $reactees }}
+    {{ end }}
+    {{ $response := sendMessageRetID nil (print .User.Mention " has " (toString $userReactions) " reactions" $rank ".") }}
+    {{ deleteMessage nil $response 35 }}
+{{ else }}
+    {{ sendDM "The reactions channel only supports the `?reactions` command; use it to view the number of times that others have reacted to your posts." }}
 {{ end }}
-
-{{ sendMessage nil (cembed "title" "Reaction Leaderboard" "color" 26367 "description" $output) }}
+{{ deleteTrigger 1 }}
 
 {{/* vim: set ts=4 sw=4 et: */}}
