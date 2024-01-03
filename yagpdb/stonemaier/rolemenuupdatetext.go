@@ -22,18 +22,18 @@
         Refreshed {{ (index .CmdArgs 0) }}
     {{ else if eq (toInt (index .CmdArgs 0)) 2 }}
         {{ $embed := cembed
-            "title" "Stonemaier Games (1/2)"
+            "title" "Stonemaier Games (1/3)"
             "color" 13585960
-            "description" "To let others know what you're playing, or just show your love of specific games, click one or more reactions below to add the corresponding game roles to your server profile. Games are sorted chronologically.\n\n<:g_viticulture:973685945859731487> Viticulture\n<:g_euphoria:973685945926840350> Euphoria: Build a Better Dystopia\n<:g_b2cities:973685945972977694> Between Two Cities\n<:g_scythe:973685945855508510> Scythe\n\n<:g_charterstone:973685945817784350> Charterstone\n<:g_mylittlescythe:973685945553530994> My Little Scythe\n<:g_b2castles:973685945826160680> Between Two Castles of Mad King Ludwig\n<:g_wingspan:973694985629229116> Wingspan"
+            "description" "To let others know what you're playing, or just show your love of specific games, click one or more reactions below to add those roles to your profile. Games are sorted chronologically; other posts below list more games.\n\n<:g_viticulture:973685945859731487> Viticulture\n<:g_euphoria:973685945926840350> Euphoria: Build a Better Dystopia\n<:g_b2cities:973685945972977694> Between Two Cities\n<:g_scythe:973685945855508510> Scythe\n\n<:g_charterstone:973685945817784350> Charterstone\n<:g_mylittlescythe:973685945553530994> My Little Scythe\n<:g_b2castles:973685945826160680> Between Two Castles of Mad King Ludwig\n<:g_wingspan:973694985629229116> Wingspan"
+            "footer" (sdict "text" "Note: Click a reaction again to remove its role. These cosmetic roles are just for fun; you can add or remove them at any time.")
         }}
         {{ editMessage nil $postID (complexMessageEdit "embed" $embed "content" "") }}
         Refreshed {{ (index .CmdArgs 0) }}
     {{ else if eq (toInt (index .CmdArgs 0)) 3 }}
         {{ $embed := cembed
-            "title" "Stonemaier Games (2/2)" 
+            "title" "Stonemaier Games (2/3)" 
             "color" 13585960
             "description" "<:g_tapestry:973685945553547275> Tapestry\n<:g_pendulum:973685945918435368> Pendulum\n<:g_redrising:973685945859706890> Red Rising\n<:g_rollingrealms:973685945947803668> Rolling Realms\n\n<:g_libertalia:973685945830350909> Libertalia: Winds of Galecrest\n<:g_smitten:1018221505705955410> Smitten\n<:g_expeditions:1070427602822631464> Expeditions\n<:g_apiary:1148982076901691422> Apiary"
-            "footer" (sdict "text" "Note: Click a reaction again to remove its role. These cosmetic roles are just for fun; you can add or remove them at any time.")
         }}
         {{ editMessage nil $postID (complexMessageEdit "embed" $embed "content" "") }}
         Refreshed {{ (index .CmdArgs 0) }}
@@ -43,6 +43,14 @@
             "color" 10066329
             "description" "**Automa Fan:** Click the <:automa:973334516410249297> reaction below to show your support of the Automa Factory and their great solo modes!\n\n**Play Async:** If you like to play board games on BGA or other online platforms, click the <:bga:983483565327151125> reaction below to add this role, and be notified when someone mentions the role (usually to announce a new game)."
             "footer" (sdict "text" "Note: Click a reaction again to remove its role. These roles are just for fun; you can add or remove them at any time.")
+        }}
+        {{ editMessage nil $postID (complexMessageEdit "embed" $embed "content" "") }}
+        Refreshed {{ (index .CmdArgs 0) }}
+    {{ else if eq (toInt (index .CmdArgs 0)) 5 }}
+        {{ $embed := cembed
+            "title" "Stonemaier Games (3/3)" 
+            "color" 13585960
+            "description" "<:g_wyrmspan:1192124259405930517> Wyrmspan"
         }}
         {{ editMessage nil $postID (complexMessageEdit "embed" $embed "content" "") }}
         Refreshed {{ (index .CmdArgs 0) }}
