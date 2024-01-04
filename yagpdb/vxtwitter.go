@@ -8,13 +8,15 @@
     Trigger type: Regex
     Trigger string: ([^<]|^)https?:\/\/(twitter|x)\.com\/\S+\/status\/\S+
 
-    Original from Discord user standardquip
-    https://discord.com/channels/166207328570441728/384011387132706816/1169758137310523413
+    Original from Discord user standardquip:
+     -  https://discord.com/channels/166207328570441728/384011387132706816/1169758137310523413
 
-    Modified by cur.by:
-        Ignore links in <angle brackets>
-        Support HTTP links (but translate them into HTTPS)
-        More comments
+    Modifications by cur.by:
+     -  Ignore links in <angle brackets>
+     -  Support HTTP links (but translate them into HTTPS)
+     -  More comments
+
+    vxTwitter is https://github.com/dylanpdx/BetterTwitFix
 
   \**************************************************************************/}}
 
