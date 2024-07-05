@@ -12,10 +12,10 @@
 
   \**************************************************************************/}}
 
-{{ $RID := 26 }}         {{/* database id for reaction counts */}}
+{{ $RID := .CCID }}         {{/* database id for reaction counts */}}
 
 {{ if eq "?reactions" (trimSpace (lower .Cmd)) }}
-    {{ $userReactions := toInt (dbGet .CCID (print "reaction_counter_" .User.ID)).Value }}
+    {{ $userReactions := toInt (dbGet $RID (print "reaction_counter_" .User.ID)).Value }}
     {{ $rank := "" }}
     {{ if gt $userReactions 0 }}
         {{ $userRank := dbRank (sdict "userID" $RID) $RID (print "reaction_counter_" .User.ID) }}
