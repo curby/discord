@@ -50,7 +50,7 @@
         {{ $embed := cembed
             "title" "Stonemaier Games (3/3)" 
             "color" 13585960
-            "description" "<:g_wyrmspan:1192124259405930517> Wyrmspan"
+            "description" "<:g_wyrmspan:1192124259405930517> Wyrmspan\n<:g_vantage:1233528548308947038> Vantage\n<:g_stampswap:1273261115886927943> Stamp Swap"
         }}
         {{ editMessage nil $postID (complexMessageEdit "embed" $embed "content" "") }}
         Refreshed {{ (index .CmdArgs 0) }}
