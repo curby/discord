@@ -50,15 +50,15 @@
         {{ $embed := cembed
             "title" "Stonemaier Games (3/3)" 
             "color" 13585960
-            "description" "<:g_wyrmspan:1192124259405930517> Wyrmspan\n<:g_vantage:1233528548308947038> Vantage\n<:g_stampswap:1273261115886927943> Stamp Swap\n<:g_finspan:1326568174879113319> Finspan"
+            "description" "<:g_wyrmspan:1192124259405930517> Wyrmspan\n<:g_vantage:1233528548308947038> Vantage\n<:g_stampswap:1273261115886927943> Stamp Swap\n<:g_finspan:1326568174879113319> Finspan\n\n<:g_tokaido:1291046276418375773> Tokaido"
         }}
         {{ editMessage nil $postID (complexMessageEdit "embed" $embed "content" "") }}
         Refreshed {{ (index .CmdArgs 0) }}
     {{ else }}
-        Usage: update-role-text <1|2|3|4|5> <postID>
+        Usage: rolemenuUpdateText <1|2|3|4|5> <postID>
     {{ end }}
 {{ else }}
-    Usage: update-role-text <1|2|3|4|5> <postID>
+    Usage: rolemenuUpdateText <1|2|3|4|5> <postID>
 {{ end }}
 {{ deleteTrigger 10 }}
 {{ deleteResponse 10 }}
