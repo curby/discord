@@ -50,7 +50,7 @@
         {{ $embed := cembed
             "title" "Stonemaier Games (3/3)" 
             "color" 13585960
-            "description" "<:g_wyrmspan:1192124259405930517> Wyrmspan\n<:g_vantage:1233528548308947038> Vantage\n<:g_stampswap:1273261115886927943> Stamp Swap\n<:g_finspan:1326568174879113319> Finspan\n\n<:g_tokaido:1291046276418375773> Tokaido"
+            "description" "<:g_wyrmspan:1192124259405930517> Wyrmspan\n<:g_vantage:1233528548308947038> Vantage\n<:g_stampswap:1273261115886927943> Stamp Swap\n<:g_finspan:1326568174879113319> Finspan\n\n<:g_tokaido:1291046276418375773> Tokaido\n<:g_originstory:1422983198492594349> Origin Story"
         }}
         {{ editMessage nil $postID (complexMessageEdit "embed" $embed "content" "") }}
         Refreshed {{ (index .CmdArgs 0) }}
